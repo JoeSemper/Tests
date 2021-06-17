@@ -45,32 +45,22 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
     }
 
     private fun setQueryListener() {
-        searchEditText.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val query = searchEditText.text.toString()
-                if (query.isNotBlank()) {
-                    presenter.searchGitHub(query)
-                    return@OnEditorActionListener true
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.enter_search_word),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@OnEditorActionListener false
-                }
+        searchButton.setOnClickListener {
+            val query = searchEditText.text.toString()
+
+            if (query.isNotBlank()) {
+                presenter.searchGitHub(query)
+            } else {
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.enter_search_word),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            false
-        })
+        }
     }
 
-    private fun createRepository(): RepositoryContract {
-//        return if (BuildConfig.TYPE == FAKE) {
-//            FakeGitHubRepository()
-//        } else {
-           return GitHubRepository(createRetrofit().create(GitHubApi::class.java))
-//        }
-    }
+    private fun createRepository() = GitHubRepository(createRetrofit().create(GitHubApi::class.java))
 
     private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -111,6 +101,5 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     companion object {
         const val BASE_URL = "https://api.github.com"
-        const val FAKE = "FAKE"
     }
 }
