@@ -13,6 +13,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.geekbrains.tests.R
+import com.geekbrains.tests.TEST_FAKE_ANSWER
+import com.geekbrains.tests.TEST_FAKE_REQUEST
 import com.geekbrains.tests.view.search.MainActivity
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -64,9 +66,9 @@ class MainActivityEspressoTest {
     @Test
     fun activitySearch_IsWorking() {
         onView(withId(R.id.searchEditText)).perform(click())
-        onView(withId(R.id.searchEditText)).perform(replaceText("algol"), closeSoftKeyboard())
-        onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
-        onView(withId(R.id.totalCountTextView)).check(matches(withText("Number of results: 42")))
+        onView(withId(R.id.searchEditText)).perform(replaceText(TEST_FAKE_REQUEST), closeSoftKeyboard())
+        onView(withId(R.id.searchButton)).perform(click())
+        onView(withId(R.id.totalCountTextView)).check(matches(withText(TEST_FAKE_ANSWER)))
     }
 
     @Test
@@ -80,16 +82,16 @@ class MainActivityEspressoTest {
     @Test
     fun activityTotalCountTextView_IsDisplayed() {
         onView(withId(R.id.searchEditText)).perform(click())
-        onView(withId(R.id.searchEditText)).perform(replaceText("algol"), closeSoftKeyboard())
-        onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
+        onView(withId(R.id.searchEditText)).perform(replaceText(TEST_FAKE_REQUEST), closeSoftKeyboard())
+        onView(withId(R.id.searchButton)).perform(click())
         onView(withId(R.id.toDetailsActivityButton)).check(matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     fun activityTotalCountTextView_IsCompletelyDisplayed() {
         onView(withId(R.id.searchEditText)).perform(click())
-        onView(withId(R.id.searchEditText)).perform(replaceText("algol"), closeSoftKeyboard())
-        onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
+        onView(withId(R.id.searchEditText)).perform(replaceText(TEST_FAKE_REQUEST), closeSoftKeyboard())
+        onView(withId(R.id.searchButton)).perform(click())
         onView(withId(R.id.toDetailsActivityButton)).check(matches(ViewMatchers.isCompletelyDisplayed()))
     }
 
