@@ -4,7 +4,7 @@ import com.geekbrains.tests.model.SearchResponse
 import com.geekbrains.tests.presenter.RepositoryContract
 import retrofit2.Response
 
-internal class FakeGitHubRepository : RepositoryContract {
+internal class GitHubRepository(private val gitHubApi: GitHubApi) : RepositoryContract {
 
     override fun searchGithub(
         query: String,
@@ -13,3 +13,4 @@ internal class FakeGitHubRepository : RepositoryContract {
         callback.handleGitHubResponse(Response.success(SearchResponse(42, listOf())))
     }
 }
+

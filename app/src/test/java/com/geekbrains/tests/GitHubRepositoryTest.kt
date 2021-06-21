@@ -3,7 +3,7 @@ package com.geekbrains.tests
 import com.geekbrains.tests.model.SearchResponse
 import com.geekbrains.tests.repository.GitHubApi
 import com.geekbrains.tests.repository.GitHubRepository
-import com.geekbrains.tests.repository.GitHubRepository.GitHubRepositoryCallback
+import com.geekbrains.tests.repository.RepositoryCallback
 import okhttp3.Request
 import okio.Timeout
 import org.junit.Before
@@ -30,19 +30,17 @@ class GitHubRepositoryTest {
 
     @Test
     fun searchGithub_Test() {
-        val searchQuery = "some query"
         val call = mock(Call::class.java) as Call<SearchResponse?>
 
-        `when`(gitHubApi.searchGithub(searchQuery)).thenReturn(call)
-        repository.searchGithub(searchQuery, mock(GitHubRepositoryCallback::class.java))
-        verify(gitHubApi, times(1)).searchGithub(searchQuery)
+        `when`(gitHubApi.searchGithub(TEST_SOME_QUERY)).thenReturn(call)
+        repository.searchGithub(TEST_SOME_QUERY, mock(RepositoryCallback::class.java))
+        verify(gitHubApi, times(1)).searchGithub(TEST_SOME_QUERY)
     }
 
     @Test
     fun searchGithub_TestCallback() {
-        val searchQuery = "some query"
         val response = mock(Response::class.java) as Response<SearchResponse?>
-        val gitHubRepositoryCallBack = mock(GitHubRepositoryCallback::class.java)
+        val gitHubRepositoryCallBack = mock(RepositoryCallback::class.java)
 
         val call = object : Call<SearchResponse?> {
             override fun enqueue(callback: Callback<SearchResponse?>) {
@@ -78,8 +76,8 @@ class GitHubRepositoryTest {
             }
         }
 
-        `when`(gitHubApi.searchGithub(searchQuery)).thenReturn(call)
-        repository.searchGithub(searchQuery, gitHubRepositoryCallBack)
+        `when`(gitHubApi.searchGithub(TEST_SOME_QUERY)).thenReturn(call)
+        repository.searchGithub(TEST_SOME_QUERY, gitHubRepositoryCallBack)
 
         verify(gitHubRepositoryCallBack, times(1)).handleGitHubResponse(response)
         verify(gitHubRepositoryCallBack, times(1)).handleGitHubError()
@@ -87,13 +85,12 @@ class GitHubRepositoryTest {
 
     @Test
     fun searchGithub_TestCallback_WithMock() {
-        val searchQuery = "some query"
         val call = mock(Call::class.java) as Call<SearchResponse?>
         val callBack = mock(Callback::class.java) as Callback<SearchResponse?>
-        val gitHubRepositoryCallBack = mock(GitHubRepositoryCallback::class.java)
+        val gitHubRepositoryCallBack = mock(RepositoryCallback::class.java)
         val response = mock(Response::class.java) as Response<SearchResponse?>
 
-        `when`(gitHubApi.searchGithub(searchQuery)).thenReturn(call)
+        `when`(gitHubApi.searchGithub(TEST_SOME_QUERY)).thenReturn(call)
         `when`(call.enqueue(callBack)).then {
             callBack.onResponse(any(), any())
         }
@@ -101,7 +98,7 @@ class GitHubRepositoryTest {
             gitHubRepositoryCallBack.handleGitHubResponse(response)
         }
 
-        repository.searchGithub(searchQuery, gitHubRepositoryCallBack)
+        repository.searchGithub(TEST_SOME_QUERY, gitHubRepositoryCallBack)
 
         verify(gitHubRepositoryCallBack, times(1)).handleGitHubResponse(response)
     }
