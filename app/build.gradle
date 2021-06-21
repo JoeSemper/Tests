@@ -58,9 +58,16 @@ android {
         }
         real {
             java {
-                srcDirs 'src\\real\\java', 'src\\real\\java\\com.geekbrains.tests.repository'
+                srcDirs 'src\\real\\java'
             }
         }
+        androidTest {
+            java.srcDirs += "src/sharedTestData/java"
+        }
+        test {
+            java.srcDirs += "src/sharedTestData/java"
+        }
+
     }
 }
 
@@ -93,4 +100,5 @@ dependencies {
     testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     testImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0-beta02'
 }
